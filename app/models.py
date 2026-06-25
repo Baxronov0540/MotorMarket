@@ -67,7 +67,6 @@ class Listing(Base):
     location:Mapped[Optional[str]]=mapped_column(String(255),nullable=True)
     description:Mapped[str]=mapped_column(Text)
     created_at:Mapped[datetime]=mapped_column(DateTime(timezone=True),default=func.now())
-    # fields added to match Admin.panel Listing
     brand:Mapped[Optional[str]]=mapped_column(String(255),nullable=True)
     model:Mapped[Optional[str]]=mapped_column(String(255),nullable=True)
     year:Mapped[Optional[int]]=mapped_column(BigInteger,nullable=True)
@@ -83,13 +82,12 @@ class Listing(Base):
     motor_power:Mapped[Optional[int]]=mapped_column(BigInteger,nullable=True)
     frame_size:Mapped[Optional[str]]=mapped_column(String(100),nullable=True)
     wheel_size:Mapped[Optional[float]]=mapped_column(Float,nullable=True)
-    frame_material:Mapped[Optional[str]]=mapped_column(String(100),nullable=True)
     speed_count:Mapped[Optional[int]]=mapped_column(BigInteger,nullable=True)
 
     user:Mapped["User"]=relationship(back_populates="listings")
     subcategory:Mapped["Subcategory"]=relationship(back_populates="listings")
     media:Mapped[List["ListingMedia"]]=relationship(back_populates="listing",cascade="all, delete-orphan")
-    # specs removed; use Listing fields directly (brand, model, etc.)
+
     saved_by:Mapped[List["SavedListing"]]=relationship(back_populates="listing",cascade="all, delete-orphan")
     conversations:Mapped[List["Conversation"]]=relationship(back_populates="listing")
 
