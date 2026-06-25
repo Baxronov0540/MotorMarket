@@ -25,49 +25,49 @@ class MessageInline(admin.TabularInline):
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'slug', 'created_at')
-    search_fields = ('name', 'slug')
-    prepopulated_fields = {'slug': ('name',)}
+    list_display = ('name', 'created_at')
+    search_fields = ('name',)
 
 
 @admin.register(Subcategory)
 class SubcategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'category', 'slug', 'created_at')
-    search_fields = ('name', 'slug')
+    list_display = ('name', 'category', 'created_at')
+    search_fields = ('name',)
     list_filter = ('category',)
-    prepopulated_fields = {'slug': ('name',)}
+    
 
 
 @admin.register(Listing)
 class ListingAdmin(admin.ModelAdmin):
     list_display = ('title', 'user', 'subcategory', 'price', 'status', 'created_at')
-    search_fields = ('title', 'description', 'make', 'model')
+    search_fields = ('title', 'description', 'brand', 'model')
     list_filter = ('status', 'condition', 'subcategory', 'created_at')
     inlines = (ListingMediaInline,)
 
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('full_name', 'email', 'phone', 'role', 'rating', 'review_count', 'created_at')
-    search_fields = ('full_name', 'email', 'phone')
-    list_filter = ('role',)
+    list_display = ('first_name', 'last_name', 'email', 'phone', 'is_active', 'created_at')
+    search_fields = ('first_name', 'last_name', 'email', 'phone')
+    list_filter = ('is_active', 'is_deleted')
 
 
 @admin.register(SavedListing)
 class SavedListingAdmin(admin.ModelAdmin):
     list_display = ('user', 'listing', 'saved_at')
-    search_fields = ('user__full_name', 'listing__title')
+    search_fields = ('user__first_name', 'user__last_name', 'listing__title')
 
 
 @admin.register(Conversation)
 class ConversationAdmin(admin.ModelAdmin):
     list_display = ('id', 'listing', 'seller', 'buyer', 'created_at', 'last_message_at')
-    search_fields = ('seller__full_name', 'buyer__full_name', 'listing__title')
+    search_fields = ('seller__first_name', 'seller__last_name', 'buyer__first_name', 'buyer__last_name', 'listing__title')
     inlines = (MessageInline,)
 
 
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
     list_display = ('conversation', 'sender', 'type', 'is_read', 'sent_at')
-    search_fields = ('body', 'sender__full_name')
+    search_fields = ('body', 'sender__first_name', 'sender__last_name')
     list_filter = ('type', 'is_read')
+ 
