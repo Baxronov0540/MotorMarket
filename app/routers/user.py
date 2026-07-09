@@ -7,7 +7,7 @@ from sqlalchemy import select
 from app.database import db_dep
 from app.schemas import UserRegisterRequest,UserRegisterResponse,UserProfileUpdateRequest
 from app.models import User
-from app.utils import decode_jwt_token, password_hash,redis_client,password_verify,generate_jwt_tokens
+from app.utils import decode_jwt_token, password_hash,redis_client,password_verify,generate_jwt_tokens,code_generator
 from app.celery import  send_email_celery
 from app.dependensies import current_user_dep
 router=APIRouter(prefix="/user",tags=["User"])
@@ -17,15 +17,14 @@ router=APIRouter(prefix="/user",tags=["User"])
 async def user_register(session:db_dep,data:UserRegisterRequest):
     stmt=select(User).where(User.email==data.email)
     user=session.execute(stmt).scalars().first()
-    if not user:
+    if not user :
         
         user=User(email=data.email,
               password=password_hash(data.password)
               )
     if user.is_active:
-        raise HTTPException(status_code=400,detail="User already exsist")    
-    
-    code=secrets.token_hex(16)
+        raise HTTPException(status_code=400,detail="User already exists")
+    code=code_generator()
     send_email_celery(
         data.email,
         "Email confiramtion",
@@ -46,6 +45,7 @@ async def user_register(session:db_dep,data:UserRegisterRequest):
 @router.post("/confirm/{code}",response_model=UserRegisterResponse)
 async def register_confirm(db:db_dep,code:str):
     email=redis_client.get(code)
+    print(email)
     if not email:
         raise HTTPException(status_code=400,detail="Invalid code")
     stmt=select(User).where(User.email==email.decode("utf-8"))
@@ -55,15 +55,18 @@ async def register_confirm(db:db_dep,code:str):
     user.is_active=True
     db.commit()
     db.refresh(user)
+    # access_token,refresh_token=generate_jwt_tokens(user.id)
+    redis_client.delete(code)
+    # return {"access_token":access_token,
+    #         "refresh_token":refresh_token}
     return user
-
 @router.post("/login",response_model=UserRegisterResponse)
 async def login(db:db_dep,data:UserRegisterRequest):
     stmt=select(User).where(User.email==data.email)
     user=db.execute(stmt).scalars().first()
     if not user:
         raise HTTPException(status_code=404,detail="User not found")
-    if not password_verify(user.password,data.password):
+    if not password_verify(data.password,user.password):
         raise HTTPException(status_code=401,detail="Invalid password!")
     
     access_token,refresh_token=generate_jwt_tokens(user.id)

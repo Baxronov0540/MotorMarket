@@ -65,11 +65,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.email
 
 
-# Listing model kept unchanged as requested
 class Listing(models.Model):
     id = models.BigAutoField(primary_key=True)
-    # The rest of Listing fields are expected to remain as in the panel implementation
-    # Keep a minimal set to reflect existing structure
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='listings')
     subcategory = models.ForeignKey(Subcategory, on_delete=models.RESTRICT, related_name='listings')
     title = models.CharField(max_length=255)

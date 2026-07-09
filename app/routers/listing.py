@@ -5,10 +5,10 @@ from pathlib import Path
 
 
 from fastapi import APIRouter,HTTPException,UploadFile,File
-from sqlalchemy import select
+from sqlalchemy import select,func
 from app.database import db_dep
 from app.dependensies import current_user_dep
-from app.models import Listing,ListingMedia
+from app.models import Listing,ListingMedia,Category,Subcategory
 from app.schemas import ListingCreateRequest,ListingResponse,ListingFilterRequest,ListingMediaRequest
 from app.config import settings
 
@@ -108,3 +108,11 @@ async def listing_media_create(db: db_dep, current_user: current_user_dep,
     db.add(image)
     db.commit()
     return {"url": image.url}
+@router.get("/count/{category_id}")
+async def listing_count(db:db_dep,current_user:current_user_dep,category_id:int|None=None):
+    stmt=select(func.count(Listing.id)).select_from(Listing)
+    if category_id:
+        stmt=stmt.join(Subcategory).where(Subcategory.category_id==category_id)    
+
+    counts=db.execute(stmt).scalars().all()
+    return {"listing counts":counts}

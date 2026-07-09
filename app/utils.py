@@ -1,3 +1,4 @@
+import random
 import redis
 import smtplib
 import jwt
@@ -10,11 +11,17 @@ from passlib.context import CryptContext
 from app.config import settings
 
 pwd_context=CryptContext(schemes=["argon2"],deprecated="auto")
-
+def code_generator(length:int=6):
+    l=[0,1,2,3,4,5,6,7,8,9]
+    code=""
+    for _ in range(length):
+        k=random.choice(l)
+        code+=str(k)
+    return int(code)
 def password_hash(password:str):
     return pwd_context.hash(password)
-def password_verify(password_hash,password):
-    return pwd_context.verify(password_hash,password)
+def password_verify(password,password_hash):
+    return pwd_context.verify(password,password_hash)
 
 def send_email(to_email: str, subject: str, body: str):
     msg = MIMEText(body)

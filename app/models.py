@@ -7,7 +7,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database import Base
 
 class Category(Base):
-    __tablename__="category"
+    __tablename__="panel_category"
 
     id:Mapped[int]=mapped_column(BigInteger,primary_key=True,autoincrement=True)
     name:Mapped[str]=mapped_column(String(255))
@@ -17,10 +17,10 @@ class Category(Base):
 
 
 class Subcategory(Base):
-    __tablename__="subcategory"
+    __tablename__="panel_subcategory"
 
     id:Mapped[int]=mapped_column(BigInteger,primary_key=True,autoincrement=True)
-    category_id:Mapped[int]=mapped_column(BigInteger,ForeignKey("category.id",ondelete="CASCADE"))
+    category_id:Mapped[int]=mapped_column(BigInteger,ForeignKey("panel_category.id",ondelete="CASCADE"))
     name:Mapped[str]=mapped_column(String(255))
     created_at:Mapped[datetime]=mapped_column(DateTime(timezone=True),default=func.now())
 
@@ -29,7 +29,7 @@ class Subcategory(Base):
 
 
 class User(Base):
-    __tablename__="users"
+    __tablename__="panel_user"
     
     id:Mapped[int]=mapped_column(BigInteger,primary_key=True,autoincrement=True)
     email:Mapped[str]=mapped_column(String(100),unique=True)
@@ -38,6 +38,8 @@ class User(Base):
     last_name:Mapped[str]=mapped_column(String(50),nullable=True)
     phone:Mapped[Optional[str]]=mapped_column(String(50),nullable=True)
     is_active:Mapped[bool]=mapped_column(Boolean,default=False)
+    is_staff:Mapped[bool]=mapped_column(Boolean,default=False)
+    is_superuser:Mapped[bool]=mapped_column(Boolean,default=False)
     is_deleted:Mapped[bool]=mapped_column(Boolean,default=False)
     created_at:Mapped[datetime]=mapped_column(DateTime(timezone=True),default=func.now())
     updated_at:Mapped[datetime]=mapped_column(DateTime(timezone=True),default=func.now(),onupdate=func.now())
@@ -55,11 +57,11 @@ class User(Base):
 
 
 class Listing(Base):
-    __tablename__="listing"
+    __tablename__="panel_listing"
 
     id:Mapped[int]=mapped_column(BigInteger,primary_key=True,autoincrement=True)
-    user_id:Mapped[int]=mapped_column(BigInteger,ForeignKey("users.id",ondelete="CASCADE"))
-    subcategory_id:Mapped[int]=mapped_column(BigInteger,ForeignKey("subcategory.id",ondelete="RESTRICT"))
+    user_id:Mapped[int]=mapped_column(BigInteger,ForeignKey("panel_user.id",ondelete="CASCADE"))
+    subcategory_id:Mapped[int]=mapped_column(BigInteger,ForeignKey("panel_subcategory.id",ondelete="RESTRICT"))
     title:Mapped[str]=mapped_column(String(255))
     price:Mapped[int]=mapped_column(BigInteger)
     condition:Mapped[str]=mapped_column(String(50))
@@ -93,10 +95,10 @@ class Listing(Base):
 
 
 class ListingMedia(Base):
-    __tablename__="listing_media"
+    __tablename__="panel_listing_media"
 
     id:Mapped[int]=mapped_column(BigInteger,primary_key=True,autoincrement=True)
-    listing_id:Mapped[int]=mapped_column(BigInteger,ForeignKey("listing.id",ondelete="CASCADE"))
+    listing_id:Mapped[int]=mapped_column(BigInteger,ForeignKey("panel_listing.id",ondelete="CASCADE"))
     url:Mapped[str]=mapped_column(String(255))
     sort_order:Mapped[int]=mapped_column(BigInteger,default=0)
     is_cover:Mapped[bool]=mapped_column(Boolean,default=False)
@@ -109,11 +111,11 @@ class ListingMedia(Base):
 
 
 class SavedListing(Base):
-    __tablename__="saved_listing"
+    __tablename__="panel_saved_listing"
 
     id:Mapped[int]=mapped_column(BigInteger,primary_key=True,autoincrement=True)
-    user_id:Mapped[int]=mapped_column(BigInteger,ForeignKey("users.id",ondelete="CASCADE"))
-    listing_id:Mapped[int]=mapped_column(BigInteger,ForeignKey("listing.id",ondelete="CASCADE"))
+    user_id:Mapped[int]=mapped_column(BigInteger,ForeignKey("panel_user.id",ondelete="CASCADE"))
+    listing_id:Mapped[int]=mapped_column(BigInteger,ForeignKey("panel_listing.id",ondelete="CASCADE"))
     saved_at:Mapped[datetime]=mapped_column(DateTime(timezone=True),default=func.now())
 
     user:Mapped["User"]=relationship(back_populates="saved_listings")
@@ -121,12 +123,12 @@ class SavedListing(Base):
 
 
 class Conversation(Base):
-    __tablename__="conversation"
+    __tablename__="panel_conversation"
 
     id:Mapped[int]=mapped_column(BigInteger,primary_key=True,autoincrement=True)
-    listing_id:Mapped[Optional[int]]=mapped_column(BigInteger,ForeignKey("listing.id",ondelete="SET NULL"),nullable=True)
-    seller_id:Mapped[int]=mapped_column(BigInteger,ForeignKey("users.id",ondelete="CASCADE"))
-    buyer_id:Mapped[int]=mapped_column(BigInteger,ForeignKey("users.id",ondelete="CASCADE"))
+    listing_id:Mapped[Optional[int]]=mapped_column(BigInteger,ForeignKey("panel_listing.id",ondelete="SET NULL"),nullable=True)
+    seller_id:Mapped[int]=mapped_column(BigInteger,ForeignKey("panel_user.id",ondelete="CASCADE"))
+    buyer_id:Mapped[int]=mapped_column(BigInteger,ForeignKey("panel_user.id",ondelete="CASCADE"))
     created_at:Mapped[datetime]=mapped_column(DateTime(timezone=True),default=func.now())
     last_message_at:Mapped[datetime]=mapped_column(DateTime(timezone=True),default=func.now(),onupdate=func.now())
 
@@ -135,13 +137,13 @@ class Conversation(Base):
     buyer:Mapped["User"]=relationship(foreign_keys=[buyer_id],back_populates="conversations_as_buyer")
     messages:Mapped[List["Message"]]=relationship(back_populates="conversation",cascade="all, delete-orphan")
 
-
 class Message(Base):
-    __tablename__="message"
+    __tablename__="panel_message"
+
 
     id:Mapped[int]=mapped_column(BigInteger,primary_key=True,autoincrement=True)
-    conversation_id:Mapped[int]=mapped_column(BigInteger,ForeignKey("conversation.id",ondelete="CASCADE"))
-    sender_id:Mapped[Optional[int]]=mapped_column(BigInteger,ForeignKey("users.id",ondelete="SET NULL"),nullable=True)
+    conversation_id:Mapped[int]=mapped_column(BigInteger,ForeignKey("panel_conversation.id",ondelete="CASCADE"))
+    sender_id:Mapped[Optional[int]]=mapped_column(BigInteger,ForeignKey("panel_user.id",ondelete="SET NULL"),nullable=True)
     body:Mapped[str]=mapped_column(Text)
     type:Mapped[str]=mapped_column(String(50),default="text")
     is_read:Mapped[bool]=mapped_column(Boolean,default=False)
