@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  fastapi_backend:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: motormarket_fastapi
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./:/app
+      - /app/.venv
+    env_file:
+      - .env
+    command: ["uv", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+    restart: unless-stopped
+
+  django_admin:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: motormarket_django
+    ports:
+      - "8001:8001" # Django admin port
+    volumes:
+      - ./:/app
+      - /app/.venv
+    env_file:
+      - .env
+    command: ["uv", "run", "python", "manage.py", "runserver", "0.0.0.0:8001"]
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: motormarket_frontend
+    ports:
+      - "4173:4173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules # Don't overwrite container's node_modules
+    environment:
+      - VITE_API_URL=http://localhost:8000 # Adjust if you have a specific env var for API url
+    depends_on:
+      - fastapi_backend
+      - django_admin
+    restart: unless-stopped
