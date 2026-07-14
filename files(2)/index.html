@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MotorMarket — Transport e'lonlari</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="mm-nav" id="mm-nav"></header>
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-plate">UZ · TRANSPORT MARKET</div>
+    <h1>Mototsikl, avtomobil va<br>velosiped — <span>bitta bozorda</span>.</h1>
+    <p>MotorMarket — faqat transport vositalari uchun maxsus e'lonlar bozori. Narxini, holatini va texnik xususiyatlarini solishtiring, sotuvchi bilan bevosita bog'laning.</p>
+    <a href="create.html" class="btn btn--accent">+ E'lon joylash</a>
+  </div>
+</section>
+
+<main class="container">
+  <form class="filters" id="filter-form">
+    <div class="field" style="grid-column: span 2;">
+      <label for="f-q">Qidiruv (Nomi bo'yicha)</label>
+      <input type="text" id="f-q" name="q" placeholder="masalan: Cobalt...">
+    </div>
+    <div class="field">
+      <label for="f-min">Narx, dan</label>
+      <input type="number" id="f-min" name="min_price" placeholder="0" min="0">
+    </div>
+    <div class="field">
+      <label for="f-max">Narx, gacha</label>
+      <input type="number" id="f-max" name="max_price" placeholder="100 000 000" min="0">
+    </div>
+    <div class="field">
+      <label for="f-sub">Toifa</label>
+      <select id="f-sub" name="subcategory_id">
+        <option value="">Barchasi</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="f-loc">Hudud</label>
+      <input type="text" id="f-loc" name="location" placeholder="Toshkent">
+    </div>
+    <div class="field">
+      <label for="f-cond">Holati</label>
+      <select id="f-cond" name="condition">
+        <option value="">Barchasi</option>
+        <option value="new">Yangi</option>
+        <option value="used">Ishlatilgan</option>
+      </select>
+    </div>
+    <div class="field" style="justify-content:flex-end;">
+      <button type="submit" class="btn btn--ghost">Filtrlash</button>
+    </div>
+  </form>
+
+  <div class="row" id="category-strip" style="gap:8px; flex-wrap:wrap; margin-bottom:28px;"></div>
+
+  <div class="section-head">
+    <h2>E'lonlar</h2>
+    <span class="count" id="result-count"></span>
+  </div>
+
+  <div class="grid" id="listing-grid">
+    <div class="skeleton" style="aspect-ratio:4/3;"></div>
+    <div class="skeleton" style="aspect-ratio:4/3;"></div>
+    <div class="skeleton" style="aspect-ratio:4/3;"></div>
+    <div class="skeleton" style="aspect-ratio:4/3;"></div>
+  </div>
+
+  <div class="row" style="justify-content:center; gap:16px; padding-bottom:40px;">
+    <button class="btn btn--ghost" id="prev-page">← Oldingi</button>
+    <span class="badge" id="page-badge">1-bet</span>
+    <button class="btn btn--ghost" id="next-page">Keyingi →</button>
+  </div>
+</main>
+
+<footer class="mm-footer">
+  <div class="container">
+    <span>© <span id="mm-year"></span> MotorMarket</span>
+    <span>Faqat transport ko'rinishidagi e'lonlar</span>
+  </div>
+</footer>
+
+<script src="js/api.js?v=3"></script>
+<script src="js/ui.js"></script>
+<script src="js/home.js?v=2"></script>
+</body>
+</html>

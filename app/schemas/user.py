@@ -21,4 +21,8 @@ class UserProfileUpdateRequest(BaseModel):
     first_name:str|None=None
     last_name:str|None=None
     phone:str|None=None
+
+class TokenResponse(BaseModel):
+    access_token: str
+    refresh_token: str | None = None
     

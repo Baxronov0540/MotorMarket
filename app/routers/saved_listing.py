@@ -1,7 +1,7 @@
 from fastapi import APIRouter,HTTPException
 from sqlalchemy import select
 
-from sqlalchemy.orm import joinedload
+from sqlalchemy.orm import selectinload
 
 from app.database import db_dep
 from app.dependensies import current_user_dep
@@ -26,10 +26,6 @@ async def saved_listing(db:db_dep,current_user:current_user_dep,saved_data:Saved
     return saved_listin
 @router.get("/list", response_model=list[SavedListingResponse])
 async def saved_list(db: db_dep, current_user: current_user_dep):
-    stmt = (
-        select(SavedListing)
-        .options(joinedload(SavedListing.listing)) 
-        .where(SavedListing.user_id == current_user.id)
-    )
+    stmt = select(SavedListing).where(SavedListing.user_id == current_user.id)
     result = db.execute(stmt)
     return result.scalars().all()

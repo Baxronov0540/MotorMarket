@@ -83,6 +83,8 @@ class Listing(models.Model):
     engine_volume = models.FloatField(blank=True, null=True)
     fuel_type = models.CharField(max_length=100, blank=True, null=True)
     transmission = models.CharField(max_length=100, blank=True, null=True)
+    drive_type = models.CharField(max_length=100, blank=True, null=True)
+    body_type = models.CharField(max_length=100, blank=True, null=True)
     battery_capacity = models.CharField(max_length=100, blank=True, null=True)
     power_reserve = models.BigIntegerField(blank=True, null=True)
     motor_power = models.BigIntegerField(blank=True, null=True)
@@ -102,6 +104,9 @@ class ListingMedia(models.Model):
     sort_order = models.BigIntegerField(default=0)
     is_cover = models.BooleanField(default=False)
 
+    class Meta:
+        db_table = 'panel_listing_media'
+
     def __str__(self):
         return f'{self.listing.title} media {self.sort_order}'
 
@@ -113,6 +118,7 @@ class SavedListing(models.Model):
     saved_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
+        db_table = 'panel_saved_listing'
         verbose_name = 'Saved Listing'
         verbose_name_plural = 'Saved Listings'
 

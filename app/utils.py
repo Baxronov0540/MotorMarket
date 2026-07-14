@@ -40,25 +40,23 @@ redis_client = redis.from_url(settings.REDIS_URL)
 
 
 def generate_jwt_tokens(user_id: int, is_access_only: bool = False):
-    access_token = jwt.encode(
-        algorithm=settings.ALGORITHM,
-        key=settings.SECRET_KEY,
-        claims={
-            "user_id": str(user_id),
-            "exp": datetime.now(timezone.utc)
-            + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
-        },
-    )
-
+    access_token =jwt.encode(
+    payload={
+        "user_id": user_id,
+        "exp": datetime.now(timezone.utc) + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES) ,
+    },
+    key=settings.SECRET_KEY,
+    algorithm=settings.ALGORITHM,
+)
     if is_access_only:
         return access_token
     refresh_token = jwt.encode(
         algorithm=settings.ALGORITHM,
         key=settings.SECRET_KEY,
-        claims={
+        payload={
             "user_id": str(user_id),
             "exp": datetime.now(timezone.utc)
-            + timedelta(settings.REFRESH_TOKEN_EXPIRE_DAYS),
+            + timedelta(days=settings.REFRESH_TOKEN_EXPIRE_DAYS),
         },
     )
     return access_token, refresh_token

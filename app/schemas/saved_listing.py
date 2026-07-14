@@ -9,5 +9,5 @@ class SavedListingResponse(BaseModel):
     id:int
     listing_id:int
     user_id:int
-    created_at:datetime
+    saved_at:datetime
     

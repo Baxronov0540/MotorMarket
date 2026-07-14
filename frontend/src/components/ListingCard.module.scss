@@ -1,0 +1,148 @@
+
+.card {
+  @include card;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+
+  .media {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: $bg-elevated;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    &:hover img {
+      transform: scale(1.05);
+    }
+
+    .no_photo {
+      @include flex(column, center, center);
+      width: 100%;
+      height: 100%;
+      color: $text-dim;
+      font-size: $text-sm;
+      gap: $spacing-sm;
+
+      span { font-size: 32px; opacity: 0.4; }
+    }
+
+    .price_badge {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      background: rgba($bg-base, 0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid $border-default;
+      border-radius: $radius-md;
+      padding: 5px 12px;
+      font-size: $text-sm;
+      font-weight: 700;
+      color: lighten($accent, 15%);
+      letter-spacing: -0.01em;
+    }
+
+    .status_badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      border-radius: $radius-full;
+      padding: 3px 10px;
+      font-size: $text-xs;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+
+      &.active {
+        background: rgba($success, 0.2);
+        color: lighten($success, 10%);
+        border: 1px solid rgba($success, 0.3);
+      }
+      &.sold {
+        background: rgba($danger, 0.2);
+        color: lighten($danger, 10%);
+        border: 1px solid rgba($danger, 0.3);
+      }
+      &.inactive {
+        background: rgba($text-dim, 0.2);
+        color: $text-dim;
+        border: 1px solid $border-subtle;
+      }
+    }
+  }
+
+  .body {
+    padding: $spacing-md;
+    @include flex(column, stretch, flex-start, 8px);
+    flex: 1;
+
+    h3 {
+      font-size: $text-base;
+      font-weight: 600;
+      color: $text-primary;
+      @include truncate(2);
+      line-height: 1.4;
+    }
+
+    .meta {
+      @include flex(row, center, flex-start, $spacing-sm);
+      flex-wrap: wrap;
+
+      .tag {
+        font-size: $text-xs;
+        font-weight: 500;
+        color: $text-dim;
+        background: $bg-elevated;
+        border: 1px solid $border-subtle;
+        border-radius: $radius-sm;
+        padding: 2px 8px;
+      }
+    }
+
+    .location {
+      @include flex(row, center, flex-start, 5px);
+      font-size: $text-xs;
+      color: $text-dim;
+      margin-top: auto;
+
+      &::before {
+        content: '📍';
+        font-size: 11px;
+      }
+    }
+  }
+}
+
+.skeleton {
+  @include card;
+  overflow: hidden;
+
+  .sk_media {
+    aspect-ratio: 4 / 3;
+    @include skeleton;
+  }
+
+  .sk_body {
+    padding: $spacing-md;
+    @include flex(column, stretch, flex-start, $spacing-sm);
+
+    .sk_line {
+      @include skeleton;
+      height: 14px;
+      border-radius: $radius-sm;
+
+      &.long { width: 80%; }
+      &.medium { width: 55%; }
+      &.short { width: 35%; }
+    }
+  }
+}
