@@ -5,7 +5,7 @@ from fastapi import APIRouter,HTTPException
 from fastapi.responses import JSONResponse
 from sqlalchemy import select
 from app.database import db_dep
-from app.schemas import UserRegisterRequest,UserRegisterResponse,UserProfileUpdateRequest
+from app.schemas import UserRegisterRequest,UserRegisterResponse,UserProfileUpdateRequest,TokenResponse
 from app.models import User
 from app.utils import decode_jwt_token, password_hash,redis_client,password_verify,generate_jwt_tokens,code_generator
 from app.celery import  send_email_celery
@@ -42,7 +42,7 @@ async def user_register(session:db_dep,data:UserRegisterRequest):
     return JSONResponse(
         status_code=201, content={"message": "Email confirmation sent to your email."}
     )
-@router.post("/confirm/{code}",response_model=UserRegisterResponse)
+@router.post("/confirm/{code}",response_model=TokenResponse)
 async def register_confirm(db:db_dep,code:str):
     email=redis_client.get(code)
     print(email)
@@ -55,12 +55,11 @@ async def register_confirm(db:db_dep,code:str):
     user.is_active=True
     db.commit()
     db.refresh(user)
-    # access_token,refresh_token=generate_jwt_tokens(user.id)
+    access_token,refresh_token=generate_jwt_tokens(user.id)
     redis_client.delete(code)
-    # return {"access_token":access_token,
-    #         "refresh_token":refresh_token}
-    return user
-@router.post("/login",response_model=UserRegisterResponse)
+    return {"access_token":access_token,
+            "refresh_token":refresh_token}
+@router.post("/login",response_model=TokenResponse)
 async def login(db:db_dep,data:UserRegisterRequest):
     stmt=select(User).where(User.email==data.email)
     user=db.execute(stmt).scalars().first()
@@ -73,7 +72,7 @@ async def login(db:db_dep,data:UserRegisterRequest):
     
     return {"access_token":access_token,
             "refresh_token":refresh_token}
-@router.post("/refresh")
+@router.post("/refresh",response_model=TokenResponse)
 async def refresh_token(db:db_dep,refresh_token:str):
     decode_data=decode_jwt_token(refresh_token)
     user_id,exp=decode_data["user_id"],datetime.fromtimestamp(decode_data["exp"],tz=timezone.utc)
@@ -89,7 +88,7 @@ async def refresh_token(db:db_dep,refresh_token:str):
 async def user_profile(db:db_dep,current_user:current_user_dep):
     return current_user
 
-@router.put("profile/update",response_model=UserRegisterResponse)
+@router.put("/profile/update",response_model=UserRegisterResponse)
 async def profile_update(db:db_dep,current_user:current_user_dep,update_data:UserProfileUpdateRequest):
 
     for key, value in update_data.model_dump(exclude_unset=True).items():
@@ -98,7 +97,7 @@ async def profile_update(db:db_dep,current_user:current_user_dep,update_data:Use
     db.refresh(current_user)
     return current_user
 
-@router.put("change/password",response_model=UserRegisterResponse)
+@router.put("/change/password",response_model=UserRegisterResponse)
 async def change_password(password:str,db:db_dep,current_user:current_user_dep):
     current_user.password=password_hash(password)
     db.commit()

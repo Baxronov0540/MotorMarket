@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 220" fill="none">
+  <defs>
+    <!-- Shield gradient -->
+    <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0A6EBD"/>
+      <stop offset="50%" stop-color="#1A9FE0"/>
+      <stop offset="100%" stop-color="#0D4FA0"/>
+    </linearGradient>
+    <!-- Shield inner gradient -->
+    <linearGradient id="shieldInner" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0C1F5E" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#071540" stop-opacity="0.98"/>
+    </linearGradient>
+    <!-- Arrow gradient -->
+    <linearGradient id="arrowGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FF6B1A"/>
+      <stop offset="100%" stop-color="#FF9500"/>
+    </linearGradient>
+    <!-- Cyan arrow -->
+    <linearGradient id="arrowBlue" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00C6FF"/>
+      <stop offset="100%" stop-color="#1A9FE0"/>
+    </linearGradient>
+    <!-- Text gradient -->
+    <linearGradient id="motorGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1A9FE0"/>
+      <stop offset="100%" stop-color="#0A6EBD"/>
+    </linearGradient>
+    <!-- Silver text -->
+    <linearGradient id="marketGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#C8D8E8"/>
+      <stop offset="100%" stop-color="#8AABCC"/>
+    </linearGradient>
+    <!-- Drop shadow -->
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#0A6EBD" flood-opacity="0.5"/>
+    </filter>
+    <filter id="glow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#1A9FE0" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <!-- SHIELD OUTER -->
+  <path d="M100 8 L178 38 L178 115 Q178 168 100 212 Q22 168 22 115 L22 38 Z"
+        fill="url(#shieldGrad)" filter="url(#shadow)"/>
+
+  <!-- SHIELD TOP ARCH -->
+  <path d="M100 8 L178 38 L178 52 L100 24 L22 52 L22 38 Z"
+        fill="#00C6FF" opacity="0.9"/>
+
+  <!-- SHIELD INNER DARK -->
+  <path d="M100 26 L168 52 L168 115 Q168 162 100 202 Q32 162 32 115 L32 52 Z"
+        fill="url(#shieldInner)"/>
+
+  <!-- SHIELD INNER BORDER -->
+  <path d="M100 26 L168 52 L168 115 Q168 162 100 202 Q32 162 32 115 L32 52 Z"
+        fill="none" stroke="#1A9FE0" stroke-width="1" opacity="0.4"/>
+
+  <!-- WHEEL / STAR in O position -->
+  <circle cx="88" cy="72" r="12" fill="none" stroke="#8AABCC" stroke-width="2.5"/>
+  <circle cx="88" cy="72" r="4" fill="#8AABCC"/>
+  <!-- spokes -->
+  <line x1="88" y1="60" x2="88" y2="84" stroke="#8AABCC" stroke-width="1.5"/>
+  <line x1="76" y1="72" x2="100" y2="72" stroke="#8AABCC" stroke-width="1.5"/>
+  <line x1="79.5" y1="63.5" x2="96.5" y2="80.5" stroke="#8AABCC" stroke-width="1.5"/>
+  <line x1="96.5" y1="63.5" x2="79.5" y2="80.5" stroke="#8AABCC" stroke-width="1.5"/>
+
+  <!-- MOTOR TEXT -->
+  <!-- M -->
+  <path d="M34 86 L34 62 L42 76 L50 62 L50 86" stroke="url(#motorGrad)" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- O (circle, wheel already drawn above) -->
+  <!-- T -->
+  <path d="M108 62 L130 62 M119 62 L119 86" stroke="url(#motorGrad)" stroke-width="6.5" stroke-linecap="round" fill="none"/>
+  <!-- O -->
+  <ellipse cx="145" cy="74" rx="12" ry="13" stroke="url(#motorGrad)" stroke-width="6" fill="none"/>
+  <!-- R -->
+  <path d="M164 86 L164 62 M164 62 Q176 62 176 70 Q176 78 164 78 M164 78 L176 86" stroke="url(#motorGrad)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+  <!-- MARKET TEXT -->
+  <!-- M -->
+  <path d="M36 116 L36 96 L43 108 L50 96 L50 116" stroke="url(#marketGrad)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- A -->
+  <path d="M56 116 L64 96 L72 116 M58.5 110 L69.5 110" stroke="url(#marketGrad)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- R -->
+  <path d="M78 116 L78 96 M78 96 Q88 96 88 103 Q88 110 78 110 M78 110 L88 116" stroke="url(#marketGrad)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- K (key/gear icon) -->
+  <path d="M94 116 L94 96 M94 104 L104 96 M94 107 L103 116" stroke="url(#marketGrad)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- E -->
+  <path d="M110 116 L110 96 L122 96 M110 106 L120 106 M110 116 L122 116" stroke="url(#marketGrad)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- T (speed/arrow icon) -->
+  <path d="M128 96 L146 96 M137 96 L137 116" stroke="url(#marketGrad)" stroke-width="5.5" stroke-linecap="round" fill="none"/>
+  <!-- Small gear/cog overlay on T -->
+  <circle cx="150" cy="108" r="5" fill="none" stroke="#8AABCC" stroke-width="1.5"/>
+  <circle cx="150" cy="108" r="2" fill="#8AABCC"/>
+
+  <!-- SWOOSH LINE (car motion) -->
+  <path d="M42 138 Q75 128 100 133 Q125 138 158 128" stroke="#1A9FE0" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.8"/>
+
+  <!-- LOCATION PIN -->
+  <circle cx="96" cy="152" r="7" fill="#1A9FE0"/>
+  <path d="M96 145 Q102 145 102 152 Q102 158 96 164 Q90 158 90 152 Q90 145 96 145" fill="#1A9FE0"/>
+  <circle cx="96" cy="152" r="3" fill="#0C1F5E"/>
+
+  <!-- ORANGE ARROW -->
+  <path d="M105 148 L138 138 L132 145 M138 138 L132 131" stroke="url(#arrowGrad)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+  <!-- BLUE ARROW -->
+  <path d="M110 155 L150 143 L143 151 M150 143 L143 135" stroke="url(#arrowBlue)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.9"/>
+
+  <!-- Decorative dots -->
+  <circle cx="60" cy="133" r="2" fill="#1A9FE0" opacity="0.5"/>
+  <circle cx="140" cy="133" r="2" fill="#1A9FE0" opacity="0.5"/>
+</svg>

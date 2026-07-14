@@ -1,0 +1,121 @@
+
+.auth_page {
+  min-height: 100vh;
+  @include flex(row, center, center);
+  position: relative;
+  overflow: hidden;
+  padding: $spacing-xl $spacing-md;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -30%;
+    left: -20%;
+    width: 60%;
+    height: 100%;
+    background: radial-gradient(ellipse, rgba($primary, 0.1) 0%, transparent 65%);
+    pointer-events: none;
+  }
+}
+
+.card {
+  width: 100%;
+  max-width: 440px;
+  background: $bg-card;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-xl;
+  box-shadow: $shadow-lg, $shadow-glow;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.card_header {
+  padding: $spacing-xl $spacing-xl $spacing-lg;
+  border-bottom: 1px solid $border-subtle;
+
+  .logo {
+    @include flex(row, center, flex-start, $spacing-sm);
+    margin-bottom: $spacing-md;
+
+    .brand_logo {
+      height: 48px;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 8px rgba(0, 100, 255, 0.3));
+    }
+  }
+
+  h1 {
+    font-size: $text-xl;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: $text-primary;
+    margin-bottom: 4px;
+  }
+
+  p {
+    font-size: $text-sm;
+    color: $text-secondary;
+  }
+}
+
+.tabs {
+  @include flex(row, center, flex-start);
+  border-bottom: 1px solid $border-subtle;
+
+  button {
+    flex: 1;
+    padding: 14px;
+    background: none;
+    border: none;
+    font-size: $text-sm;
+    font-weight: 600;
+    color: $text-dim;
+    cursor: pointer;
+    transition: $transition-fast;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+
+    &.active {
+      color: $primary-light;
+      border-bottom-color: $primary;
+    }
+
+    &:hover:not(.active) {
+      color: $text-secondary;
+    }
+  }
+}
+
+.form {
+  padding: $spacing-xl;
+  @include flex(column, stretch, flex-start, $spacing-md);
+}
+
+.error_box {
+  background: rgba($danger, 0.12);
+  border: 1px solid rgba($danger, 0.3);
+  border-radius: $radius-md;
+  padding: 12px $spacing-md;
+  font-size: $text-sm;
+  color: lighten($danger, 15%);
+}
+
+.hint {
+  font-size: $text-sm;
+  color: $text-secondary;
+  background: $bg-elevated;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-md;
+  padding: 12px $spacing-md;
+  line-height: 1.6;
+}
+
+.code_input {
+  text-align: center;
+  letter-spacing: 0.5em;
+  font-size: 24px;
+  font-weight: 700;
+  font-family: $font-mono;
+}

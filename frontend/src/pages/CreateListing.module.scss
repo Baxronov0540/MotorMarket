@@ -1,0 +1,150 @@
+
+.page {
+  @include container;
+  padding-top: $spacing-2xl;
+  padding-bottom: $spacing-3xl;
+  max-width: 820px;
+}
+
+.header {
+  margin-bottom: $spacing-2xl;
+
+  h1 {
+    font-size: $text-2xl;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: $text-primary;
+    margin-bottom: 6px;
+  }
+
+  p { font-size: $text-sm; color: $text-dim; }
+}
+
+.form_card {
+  background: $bg-card;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-xl;
+  padding: $spacing-2xl;
+  box-shadow: $shadow-card;
+  @include flex(column, stretch, flex-start, $spacing-xl);
+
+  @include responsive($bp-md) {
+    padding: $spacing-xl;
+  }
+}
+
+.section_title {
+  font-size: $text-sm;
+  font-weight: 700;
+  color: $text-dim;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding-bottom: $spacing-md;
+  border-bottom: 1px solid $border-subtle;
+  margin-bottom: $spacing-md;
+}
+
+.two_col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-md;
+
+  @include responsive($bp-sm) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.three_col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $spacing-md;
+
+  @include responsive($bp-sm) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.error_box {
+  background: rgba($danger, 0.12);
+  border: 1px solid rgba($danger, 0.3);
+  border-radius: $radius-md;
+  padding: 12px $spacing-md;
+  font-size: $text-sm;
+  color: lighten($danger, 15%);
+}
+
+// Media Upload
+.media_zone {
+  border: 2px dashed $border-default;
+  border-radius: $radius-lg;
+  padding: $spacing-2xl;
+  text-align: center;
+  cursor: pointer;
+  transition: $transition-fast;
+  position: relative;
+
+  &:hover, &.dragging {
+    border-color: $primary;
+    background: rgba($primary, 0.04);
+  }
+
+  input { display: none; }
+
+  .upload_icon { font-size: 36px; margin-bottom: $spacing-sm; opacity: 0.6; }
+  .upload_text { font-size: $text-sm; color: $text-secondary; }
+  .upload_hint { font-size: $text-xs; color: $text-dim; margin-top: 4px; }
+}
+
+.thumb_strip {
+  @include flex(row, flex-start, flex-start, $spacing-sm);
+  flex-wrap: wrap;
+  margin-top: $spacing-md;
+
+  .thumb {
+    position: relative;
+    width: 100px;
+    height: 80px;
+    border-radius: $radius-md;
+    overflow: hidden;
+    border: 2px solid $border-subtle;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    &:first-child {
+      border-color: $accent;
+      &::after {
+        content: 'MUQOVA';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba($accent, 0.8);
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+        text-align: center;
+        padding: 3px;
+        color: #fff;
+      }
+    }
+  }
+}
+
+// Dynamic fields
+.dyn_section {
+  @include flex(column, stretch, flex-start, $spacing-md);
+  padding: $spacing-xl;
+  background: $bg-elevated;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-lg;
+}
+
+.actions {
+  @include flex(row, center, flex-end, $spacing-md);
+  padding-top: $spacing-md;
+  border-top: 1px solid $border-subtle;
+}

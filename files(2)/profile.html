@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profil — MotorMarket</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="mm-nav" id="mm-nav"></header>
+
+<main class="container" style="padding-bottom:80px;">
+  <div class="page-head">
+    <h1>Profil</h1>
+  </div>
+
+  <div class="detail-grid" style="grid-template-columns: 1fr 1.4fr;">
+    <div class="stack">
+      <div class="form-card">
+        <h2>Shaxsiy ma'lumotlar</h2>
+        <p class="hint">Ism, familiya va telefon raqamingizni yangilang.</p>
+        <div class="error-box" id="profile-error"></div>
+        <form id="profile-form">
+          <div class="form-row">
+            <label>Email</label>
+            <input type="email" id="p-email" disabled>
+          </div>
+          <div class="form-grid">
+            <div class="form-row">
+              <label for="p-first">Ism</label>
+              <input type="text" id="p-first" placeholder="Aziz">
+            </div>
+            <div class="form-row">
+              <label for="p-last">Familiya</label>
+              <input type="text" id="p-last" placeholder="Aliyev">
+            </div>
+          </div>
+          <div class="form-row">
+            <label for="p-phone">Telefon</label>
+            <input type="text" id="p-phone" placeholder="+998 90 123 45 67">
+          </div>
+          <button type="submit" class="btn btn--accent btn--block">Saqlash</button>
+        </form>
+      </div>
+
+      <div class="form-card">
+        <h2>Parolni o'zgartirish</h2>
+        <div class="error-box" id="password-error"></div>
+        <form id="password-form">
+          <div class="form-row">
+            <label for="p-new-password">Yangi parol</label>
+            <input type="password" id="p-new-password" minlength="6" required>
+          </div>
+          <button type="submit" class="btn btn--ghost btn--block">Parolni yangilash</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="stack">
+      <div class="section-head">
+        <h2>Mening e'lonlarim</h2>
+        <a href="create.html" class="btn btn--accent">+ Yangi e'lon</a>
+      </div>
+      <div class="grid" id="my-listings">
+        <div class="skeleton" style="aspect-ratio:4/3;"></div>
+        <div class="skeleton" style="aspect-ratio:4/3;"></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="mm-footer">
+  <div class="container">
+    <span>© <span id="mm-year"></span> MotorMarket</span>
+  </div>
+</footer>
+
+<script src="js/api.js?v=3"></script>
+<script src="js/ui.js"></script>
+<script src="js/profile.js?v=3"></script>
+</body>
+</html>

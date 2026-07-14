@@ -6,10 +6,11 @@ from pathlib import Path
 
 from fastapi import APIRouter,HTTPException,UploadFile,File
 from sqlalchemy import select,func
+from sqlalchemy.orm import joinedload, selectinload
 from app.database import db_dep
 from app.dependensies import current_user_dep
 from app.models import Listing,ListingMedia,Category,Subcategory
-from app.schemas import ListingCreateRequest,ListingResponse,ListingFilterRequest,ListingMediaRequest
+from app.schemas import ListingCreateRequest,ListingResponse,ListingFilterRequest,ListingMediaRequest,ListingUpdateRequest
 from app.config import settings
 
 
@@ -19,19 +20,35 @@ router=APIRouter(prefix="/listing",tags=["Listing"])
 
 @router.post("/create")
 async def listing_create(db:db_dep,current_user:current_user_dep,create_data:ListingCreateRequest):
-    listing=Listing(user_id=current_user.id,subcategory_id=create_data.subcategory_id,price=create_data.price,description=create_data.description)
+    listing=Listing(user_id=current_user.id, **create_data.model_dump(exclude_unset=True))
     db.add(listing)
     db.commit()
     db.refresh(listing)
     return listing      
+@router.put("/update/{listing_id}")
+async def listing_update(db:db_dep,current_user:current_user_dep,listing_id:int,update_data:ListingUpdateRequest):
+    stmt=select(Listing).where(Listing.id==listing_id)
+    listing=db.execute(stmt).scalar_one_or_none()
+    if not listing:
+        raise HTTPException(status_code=404,detail="Listing not found")
+    if listing.user_id!=current_user.id:
+        raise HTTPException(status_code=403,detail="You are not authorized to update this listing")
+    
+    update_dict = update_data.model_dump(exclude_unset=True)
+    for key, value in update_dict.items():
+        setattr(listing, key, value)
+        
+    db.commit()
+    db.refresh(listing)
+    return listing
 @router.get("/list",response_model=list[ListingResponse])
 async def listing_list(db:db_dep):
-    stmt=select(Listing)
+    stmt=select(Listing).options(selectinload(Listing.media))
     listings=db.execute(stmt).scalars().all()
     return listings
 @router.get("/get/{listing_id}",response_model=ListingResponse)
 async def listing_get(db:db_dep,listing_id:int):
-    stmt=select(Listing).where(Listing.id==listing_id)
+    stmt=select(Listing).options(selectinload(Listing.media)).where(Listing.id==listing_id)
     listing=db.execute(stmt).scalar_one_or_none()
     if not listing:
         raise HTTPException(status_code=404,detail="Listing not found")
@@ -49,7 +66,7 @@ async def listing_delete(db:db_dep,current_user:current_user_dep,listing_id:int)
     return {"message":"Listing deleted successfully"}
 @router.get("/user/",response_model=list[ListingResponse])
 async def listing_list_by_user(db:db_dep,current_user:current_user_dep ):
-    stmt=select(Listing).where(Listing.user_id==current_user.id)
+    stmt=select(Listing).options(selectinload(Listing.media)).where(Listing.user_id==current_user.id)
     listings=db.execute(stmt).scalars().all()
     
     return listings
@@ -59,6 +76,7 @@ from fastapi import Query
 @router.get("/filter/",response_model=list[ListingResponse])
 async def listing_filter(
     db: db_dep,
+    q: str = None,
     min_price: float = None,
     max_price: float = None,
     subcategory_id: int = None,
@@ -67,8 +85,10 @@ async def listing_filter(
     page: int = Query(1, ge=1),
     size: int = Query(10, ge=1, le=100) 
 ):
-    stmt = select(Listing)
+    stmt = select(Listing).options(selectinload(Listing.media))
     
+    if q:
+        stmt = stmt.where(Listing.title.ilike(f"%{q}%"))
     if min_price: 
         stmt = stmt.where(Listing.price >= min_price)
     if max_price:

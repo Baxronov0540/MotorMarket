@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E'lonni tahrirlash — MotorMarket</title>
+<link rel="stylesheet" href="css/style.css?v=2">
+</head>
+<body>
+
+<header class="mm-nav" id="mm-nav"></header>
+
+<main class="container narrow" style="padding:40px 24px 100px;">
+  <div class="page-head" style="padding-top:0;">
+    <h1>E'lonni tahrirlash</h1>
+    <p class="hint" style="color:var(--text-muted);">Transport vositangiz haqida to'liq ma'lumot bering — bu tezroq sotilishiga yordam beradi.</p>
+  </div>
+
+  <div class="form-card">
+    <div class="error-box" id="create-error"></div>
+    <form id="create-form">
+      <div class="form-row">
+        <label for="c-title">Sarlavha</label>
+        <input type="text" id="c-title" required placeholder="masalan: Honda CB400 2019">
+      </div>
+
+      <div class="form-grid">
+        <div class="form-row">
+          <label for="c-category">Nima qo'shmoqchisiz? (Kategoriya)</label>
+          <select id="c-category" required>
+            <option value="" disabled selected>Yuklanmoqda...</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label for="c-subcategory">Kichik toifa (Subkategoriya)</label>
+          <select id="c-subcategory" required disabled>
+            <option value="" disabled selected>Oldin kategoriyani tanlang</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-row">
+          <label for="c-price">Narx (so'm)</label>
+          <input type="number" id="c-price" required min="0" placeholder="45000000">
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-row">
+          <label for="c-condition">Holati</label>
+          <select id="c-condition" required>
+            <option value="used">Ishlatilgan</option>
+            <option value="new">Yangi</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label for="c-status">Holat (status)</label>
+          <select id="c-status" required>
+            <option value="active">Faol</option>
+            <option value="inactive">Nofaol</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label for="c-location">Hudud</label>
+        <input type="text" id="c-location" required placeholder="Toshkent">
+      </div>
+
+      <div class="form-row">
+        <label for="c-description">Tavsif</label>
+        <textarea id="c-description" rows="5" placeholder="Texnik holati, ta'mirlashlar, kelishuv shartlari..."></textarea>
+      </div>
+
+      <!-- Dynamic Fields Container -->
+      <div id="dynamic-fields" style="display:none; margin-top:20px; border-top:1px solid var(--border-color); padding-top:20px;">
+        <h3 style="margin-bottom:16px;">Qo'shimcha ma'lumotlar</h3>
+        
+        <div class="form-grid">
+          <div class="form-row dyn-field" data-groups="avto,electro,moto,velo">
+            <label for="c-brand">Brend (Brand)</label>
+            <input type="text" id="c-brand" placeholder="masalan: Chevrolet, Trek">
+          </div>
+          <div class="form-row dyn-field" data-groups="avto,electro,moto,velo">
+            <label for="c-model">Model</label>
+            <input type="text" id="c-model" placeholder="masalan: Malibu, Spark">
+          </div>
+        </div>
+
+        <div class="form-grid dyn-field" data-groups="avto,electro,moto">
+          <div class="form-row">
+            <label for="c-year">Yili</label>
+            <input type="number" id="c-year" placeholder="masalan: 2022" min="1900">
+          </div>
+          <div class="form-row">
+            <label for="c-mileage">Yurgani (km)</label>
+            <input type="number" id="c-mileage" placeholder="masalan: 15000" min="0">
+          </div>
+        </div>
+
+        <div class="form-row dyn-field" data-groups="avto,electro,moto">
+          <label for="c-color">Rangi</label>
+          <input type="text" id="c-color" placeholder="masalan: Oq">
+        </div>
+
+        <div class="form-grid dyn-field" data-groups="avto,moto">
+          <div class="form-row">
+            <label for="c-engine_volume">Dvigatel hajmi (L)</label>
+            <input type="number" id="c-engine_volume" step="0.1" placeholder="masalan: 1.5" min="0">
+          </div>
+          <div class="form-row">
+            <label for="c-fuel_type">Yoqilg'i turi</label>
+            <select id="c-fuel_type">
+              <option value="">Tanlang</option>
+              <option value="Benzin">Benzin</option>
+              <option value="Gaz">Gaz</option>
+              <option value="Dizel">Dizel</option>
+              <option value="Gibrid">Gibrid</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-grid dyn-field" data-groups="avto,electro">
+          <div class="form-row">
+            <label for="c-transmission">Uzatmalar qutisi</label>
+            <select id="c-transmission">
+              <option value="">Tanlang</option>
+              <option value="Mexanika">Mexanika</option>
+              <option value="Avtomat">Avtomat</option>
+              <option value="Robot">Robot</option>
+              <option value="Variator">Variator</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label for="c-drive_type">Tortish turi</label>
+            <select id="c-drive_type">
+              <option value="">Tanlang</option>
+              <option value="Old">Old (Peredniy)</option>
+              <option value="Orqa">Orqa (Zadniy)</option>
+              <option value="To'liq">To'liq (Polniy 4WD)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row dyn-field" data-groups="avto,electro">
+          <label for="c-body_type">Kuzov turi</label>
+          <select id="c-body_type">
+            <option value="">Tanlang</option>
+            <option value="Sedan">Sedan</option>
+            <option value="Xetchbek">Xetchbek</option>
+            <option value="Krossover">Krossover / SUV</option>
+            <option value="Kupe">Kupe</option>
+            <option value="Pikap">Pikap</option>
+          </select>
+        </div>
+
+        <div class="form-grid dyn-field" data-groups="electro">
+          <div class="form-row">
+            <label for="c-battery_capacity">Batareya (kWh)</label>
+            <input type="text" id="c-battery_capacity" placeholder="masalan: 60 kWh">
+          </div>
+          <div class="form-row">
+            <label for="c-power_reserve">Yurish zaxirasi (km)</label>
+            <input type="number" id="c-power_reserve" placeholder="masalan: 400" min="0">
+          </div>
+        </div>
+        <div class="form-row dyn-field" data-groups="electro">
+          <label for="c-motor_power">Motor quvvati (kW)</label>
+          <input type="number" id="c-motor_power" placeholder="masalan: 204">
+        </div>
+
+        <div class="form-grid dyn-field" data-groups="velo">
+          <div class="form-row">
+            <label for="c-frame_size">Rama o'lchami</label>
+            <input type="text" id="c-frame_size" placeholder="masalan: 19, M, L">
+          </div>
+          <div class="form-row">
+            <label for="c-wheel_size">G'ildirak (dyuym)</label>
+            <input type="number" id="c-wheel_size" step="0.5" placeholder="masalan: 29">
+          </div>
+        </div>
+        <div class="form-row dyn-field" data-groups="velo">
+          <label for="c-speed_count">Tezliklar soni</label>
+          <input type="number" id="c-speed_count" placeholder="masalan: 21">
+        </div>
+      </div>
+
+      <div style="margin-top:20px; border-top:1px solid var(--border-color); padding-top:20px;">
+        <h3 style="margin-bottom:16px;">Fotosuratlar qo'shish</h3>
+        <label class="upload-box" for="media-input" style="margin-bottom: 16px;">
+          <div>Rasmlarni tanlash uchun bosing...</div>
+          <input type="file" id="media-input" multiple accept="image/*" style="display:none">
+        </label>
+        <div class="thumb-strip" id="thumb-strip" style="margin-bottom: 20px;"></div>
+      </div>
+
+      <button type="submit" class="btn btn--accent btn--block" id="create-submit">Saqlash</button>
+    </form>
+  </div>
+</main>
+
+<footer class="mm-footer">
+  <div class="container">
+    <span>© <span id="mm-year"></span> MotorMarket</span>
+  </div>
+</footer>
+
+<script src="js/api.js?v=3"></script>
+<script src="js/ui.js"></script>
+<script src="js/edit.js?v=1"></script>
+</body>
+</html>

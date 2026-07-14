@@ -10,13 +10,23 @@ from app.utils import decode_jwt_token
 jwt_security=HTTPBearer(auto_error=False)
 credentials_dep=Annotated[HTTPAuthorizationCredentials,Depends(jwt_security)]
 
-def current_user(credintials:credentials_dep):
-    decode_data=decode_jwt_token(credintials.credentials)
-    user_id,exp=decode_data["user_id"],datetime.fromtimestamp(decode_data["exp"],tz=timezone.utc)
-    if exp<datetime.now(timezone.utc):
-        raise HTTPException(status_code=401,detail="Token expired!")
+import jwt
+
+def current_user(credintials:credentials_dep,db:db_dep):
+    if not credintials:
+        raise HTTPException(status_code=401, detail="No credentials provided")
+    try:
+        decode_data=decode_jwt_token(credintials.credentials)
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="Token expired!")
+    except jwt.PyJWTError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+    user_id = decode_data.get("user_id")
+    if not user_id:
+        raise HTTPException(status_code=401, detail="Invalid token payload")
     stmt=select(User).where(User.id==user_id)
-    user=db_dep.execute(stmt).scalars().first()
+    user=db.execute(stmt).scalars().first()
     if not user:
         raise HTTPException(status_code=404,detail="User not found")
     return user

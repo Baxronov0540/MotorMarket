@@ -1,0 +1,193 @@
+
+.page {
+  @include container;
+  padding-top: $spacing-2xl;
+  padding-bottom: $spacing-3xl;
+}
+
+.back_btn {
+  margin-bottom: $spacing-xl;
+}
+
+.detail_grid {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: $spacing-2xl;
+  align-items: start;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Gallery
+.gallery {
+  .main {
+    aspect-ratio: 16/10;
+    border-radius: $radius-lg;
+    overflow: hidden;
+    background: $bg-elevated;
+    border: 1px solid $border-subtle;
+    cursor: zoom-in;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+
+      &:hover { transform: scale(1.03); }
+    }
+
+    .no_photo {
+      @include flex(column, center, center, $spacing-md);
+      height: 100%;
+      color: $text-dim;
+      font-size: $text-sm;
+      span { font-size: 56px; opacity: 0.3; }
+    }
+  }
+
+  .thumbs {
+    @include flex(row, center, flex-start, $spacing-sm);
+    margin-top: $spacing-md;
+    overflow-x: auto;
+    @include scrollbar;
+    padding-bottom: 4px;
+
+    img {
+      width: 80px;
+      height: 60px;
+      border-radius: $radius-sm;
+      border: 2px solid $border-subtle;
+      cursor: pointer;
+      object-fit: cover;
+      transition: $transition-fast;
+      flex-shrink: 0;
+
+      &.active, &:hover {
+        border-color: $primary;
+        box-shadow: 0 0 12px rgba($primary, 0.3);
+      }
+    }
+  }
+}
+
+// Description
+.description {
+  margin-top: $spacing-xl;
+  padding: $spacing-xl;
+  background: $bg-card;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-lg;
+
+  h3 {
+    font-size: $text-base;
+    font-weight: 600;
+    color: $text-secondary;
+    margin-bottom: $spacing-md;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: $text-xs;
+  }
+
+  p {
+    font-size: $text-base;
+    color: $text-secondary;
+    line-height: 1.8;
+    white-space: pre-wrap;
+  }
+}
+
+// Right panel
+.panel {
+  position: sticky;
+  top: calc($nav-height + $spacing-xl);
+  @include flex(column, stretch, flex-start, $spacing-md);
+}
+
+.price_card {
+  background: $bg-card;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-lg;
+  padding: $spacing-xl;
+  box-shadow: $shadow-card;
+
+  .price {
+    font-size: $text-3xl;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    background: $gradient-accent;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: $spacing-sm;
+  }
+
+  h1 {
+    font-size: $text-xl;
+    font-weight: 700;
+    color: $text-primary;
+    line-height: 1.3;
+    margin-bottom: $spacing-sm;
+  }
+
+  .subtitle {
+    @include flex(row, center, flex-start, $spacing-sm);
+    flex-wrap: wrap;
+    font-size: $text-sm;
+    color: $text-dim;
+    margin-bottom: $spacing-xl;
+  }
+
+  .actions {
+    @include flex(column, stretch, flex-start, $spacing-sm);
+  }
+}
+
+// Specs
+.specs_card {
+  background: $bg-card;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-lg;
+  padding: $spacing-xl;
+  box-shadow: $shadow-card;
+
+  h3 {
+    font-size: $text-xs;
+    font-weight: 700;
+    color: $text-dim;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: $spacing-md;
+    padding-bottom: $spacing-md;
+    border-bottom: 1px solid $border-subtle;
+  }
+
+  .spec_list {
+    @include flex(column, stretch, flex-start, 0);
+  }
+
+  .spec_item {
+    @include flex(row, center, space-between);
+    padding: 10px 0;
+    border-bottom: 1px solid $border-subtle;
+    gap: $spacing-md;
+
+    &:last-child { border-bottom: none; }
+
+    .key {
+      font-size: $text-sm;
+      color: $text-dim;
+      flex-shrink: 0;
+      font-weight: 500;
+    }
+
+    .val {
+      font-size: $text-sm;
+      color: $text-primary;
+      font-weight: 500;
+      text-align: right;
+    }
+  }
+}
